@@ -1,3 +1,7 @@
+C = \:
+# do not change C
+
+
 PREFIX = /usr
 DATA = /share
 PKGNAME = pony-artwork
@@ -6,10 +10,11 @@ SYSLINUX_VESAMENU = y
 BRANDED = y
 UNBRANDED = y
 PREVIEWS = y
-ASPECT = 4:3 16:9
+ASPECT = 4$(C)3 16$(C)9
 
 
 DIR = $(DESTDIR)$(PREFIX)$(DATA)/$(PKGNAME)
+
 
 
 .PHONY: all install uninstall clean
@@ -60,32 +65,32 @@ ifeq ($(PREVIEWS),y)
 .PHONY: install-syslinux-vesamenu-preview
 install: install-syslinux-vesamenu-preview
 install-syslinux-vesamenu-preview: $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), $(S)/preview.png)
-	install -dm755 -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)/$(S)")
+	install -dm755 -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)"/$(S))
 	for S in $(SYSLINUX_VESAMENU_SRC_ALL); do \
-	    install -m644 -- "$$S/preview.png" "$(DIR)/$(S)" || exit 1; \
+	    install -m644 -- $$S/preview.png "$(DIR)"/$$S || exit 1; \
 	done
 
 .PHONY: uninstall-syslinux-vesamenu-preview
 uninstall: uninstall-syslinux-vesamenu-preview
 uninstall-syslinux-vesamenu-preview:
-	-rm -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)/$(S)/preview.png")
+	-rm -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)"/$(S)/preview.png)
 
 endif
 
 .PHONY: install-syslinux-vesamenu
 install: install-syslinux-vesamenu
 install-syslinux-vesamenu: $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), $(S)/splash.png $(S)/syslinux.cfg)
-	install -dm755 -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)/$(S)")
+	install -dm755 -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)"/$(S))
 	for S in $(SYSLINUX_VESAMENU_SRC_ALL); do \
-	    install -m644 -- "$$S/splash.png" "$$S/syslinux.cfg" "$(DIR)/$(S)" || exit 1; \
+	    install -m644 -- "$$S/splash.png" "$$(realpath "$$S/syslinux.cfg")" "$(DIR)/"$$S || exit 1; \
 	done
 
 .PHONY: uninstall-syslinux-vesamenu
 uninstall: uninstall-syslinux-vesamenu
 uninstall-syslinux-vesamenu:
-	-rm -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)/$(S)/splash.png" "$(DIR)/$(S)/syslinux.cfg")
-	-rmdir -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)/$(S)")
-	-rmdir -- $(foreach A, $(ASPECT), "$(DIR)/SYSLINUX/vesamenu/$(A)")
+	-rm -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)"/$(S)/splash.png "$(DIR)"/$(S)/syslinux.cfg)
+	-rmdir -- $(foreach S, $(SYSLINUX_VESAMENU_SRC_ALL), "$(DIR)"/$(S))
+	-rmdir -- $(foreach A, $(ASPECT), "$(DIR)"/SYSLINUX/vesamenu/$(A))
 	-rmdir -- "$(DIR)/SYSLINUX/vesamenu"
 	-rmdir -- "$(DIR)/SYSLINUX"
 	-rmdir -- "$(DIR)"
@@ -93,7 +98,7 @@ uninstall-syslinux-vesamenu:
 .PHONY: clean-syslinux-vesamenu
 clean: clean-syslinux-vesamenu
 clean-syslinux-vesamenu:
-	for S in $(SYSLINUX_VESAMENU_SRC_ALL); do cd $(S) && make clean; done
+	-for S in $(SYSLINUX_VESAMENU_SRC_ALL); do cd "$$S" && make clean ; cd - ; done
 
 endif
 
