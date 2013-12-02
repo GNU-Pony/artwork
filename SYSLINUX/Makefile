@@ -4,7 +4,7 @@ CONVERT = convert
 .PHONY: all
 all: splash.png
 
-splash.png: splash.xcf
+splash.png: splash.xcf.bz2
 	$(CONVERT) -flatten "$<" "$@"
 
 .PHONY: clean
