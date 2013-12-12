@@ -25,7 +25,7 @@ clean:
 
 
 
-#### SYSLINUX vesamenu themss
+#### SYSLINUX vesamenu themes
 
 ifeq ($(SYSLINUX_VESAMENU),y)
 
